@@ -1,0 +1,29 @@
+{
+  "name": "wasilni-platform",
+  "version": "1.0.0",
+  "description": "Transport & Parcels Platform for Yemen",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:api": "pnpm --filter @wasilni/api run start:dev",
+    "dev:admin": "pnpm --filter @wasilni/admin run dev",
+    "build:api": "pnpm --filter @wasilni/api run build",
+    "build:admin": "pnpm --filter @wasilni/admin run build",
+    "test": "pnpm -r run test",
+    "lint": "pnpm -r run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "clean": "pnpm -r run clean && rm -rf node_modules"
+  },
+  "devDependencies": {
+    "prettier": "^3.1.0",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "packageManager": "pnpm@8.15.0"
+}

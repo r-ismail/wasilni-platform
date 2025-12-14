@@ -1,0 +1,96 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgis/postgis:15-3.3
+    container_name: wasilni-postgres
+    environment:
+      POSTGRES_USER: wasilni
+      POSTGRES_PASSWORD: wasilni_dev_password
+      POSTGRES_DB: wasilni
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ../../infra/migrations/001_rls_policies.sql:/docker-entrypoint-initdb.d/001_rls_policies.sql
+    networks:
+      - wasilni-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U wasilni"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: wasilni-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - wasilni-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: ../../apps/api
+      dockerfile: Dockerfile
+    container_name: wasilni-api
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: wasilni
+      DB_PASSWORD: wasilni_dev_password
+      DB_NAME: wasilni
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      JWT_SECRET: dev-jwt-secret-change-in-production
+      JWT_REFRESH_SECRET: dev-refresh-secret-change-in-production
+    ports:
+      - "3000:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ../../apps/api:/app
+      - /app/node_modules
+    networks:
+      - wasilni-network
+    command: pnpm run start:dev
+
+  admin:
+    build:
+      context: ../../apps/admin
+      dockerfile: Dockerfile
+    container_name: wasilni-admin
+    environment:
+      NODE_ENV: development
+      NEXT_PUBLIC_API_URL: http://localhost:3000/api/v1
+    ports:
+      - "3001:3001"
+    depends_on:
+      - api
+    volumes:
+      - ../../apps/admin:/app
+      - /app/node_modules
+      - /app/.next
+    networks:
+      - wasilni-network
+    command: pnpm run dev
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  wasilni-network:
+    driver: bridge
