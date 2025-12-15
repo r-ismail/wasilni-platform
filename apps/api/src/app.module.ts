@@ -21,6 +21,7 @@ import { AgenciesModule } from './modules/agencies/agencies.module';
 import { MatchingModule } from './modules/matching/matching.module';
 import { RatingsModule } from './modules/ratings/ratings.module';
 import { SafetyModule } from './modules/safety/safety.module';
+import { VoiceModule } from './modules/voice/voice.module';
 
 @Module({
   imports: [
@@ -54,6 +55,7 @@ import { SafetyModule } from './modules/safety/safety.module';
     MatchingModule,
     RatingsModule,
     SafetyModule,
+    VoiceModule,
     ParcelsModule,
     PricingModule,
     LedgerModule,
