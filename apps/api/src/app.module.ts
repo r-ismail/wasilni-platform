@@ -17,6 +17,8 @@ import { NotificationsModule } from './modules/notifications/notifications.modul
 import { FilesModule } from './modules/files/files.module';
 import { WebsocketModule } from './modules/websocket/websocket.module';
 import { AdminModule } from './modules/admin/admin.module';
+import { AgenciesModule } from './modules/agencies/agencies.module';
+import { MatchingModule } from './modules/matching/matching.module';
 
 @Module({
   imports: [
@@ -46,7 +48,9 @@ import { AdminModule } from './modules/admin/admin.module';
     AuthModule,
     UsersModule,
     DriversModule,
+    AgenciesModule,
     TripsModule,
+    MatchingModule,
     ParcelsModule,
     PricingModule,
     LedgerModule,

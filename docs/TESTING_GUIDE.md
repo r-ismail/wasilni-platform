@@ -9,18 +9,27 @@ The platform has been successfully created and pushed to GitHub at `https://gith
 ### ✅ Completed Setup Steps
 
 1. **Repository Created**: GitHub repository initialized with all code
-2. **Dependencies Installed**: All Node.js packages installed via pnpm
-3. **Database Setup**: PostgreSQL with PostGIS extension configured
-4. **Schema Created**: All database tables created successfully
-5. **Seed Data Loaded**: Initial tenants, admin user, and pricing rules inserted
+
+1. **Dependencies Installed**: All Node.js packages installed via pnpm
+
+1. **Database Setup**: PostgreSQL with PostGIS extension configured
+
+1. **Schema Created**: All database tables created successfully
+
+1. **Seed Data Loaded**: Initial tenants, admin user, and pricing rules inserted
 
 ### 📋 What Was Created
 
-- **Backend API** (NestJS): 12 modules with authentication, multi-tenancy, and business logic
+- **Backend API** (NestJS ): 12 modules with authentication, multi-tenancy, and business logic
+
 - **Admin Portal** (Next.js): Dashboard with professional design
+
 - **Mobile Apps** (Flutter): Passenger and driver apps with complete structure
+
 - **Database Schema**: 11 tables with PostGIS spatial support
+
 - **Infrastructure**: Docker Compose configuration and SQL migration scripts
+
 - **Documentation**: Runbook, project overview, and this testing guide
 
 ## Local Testing Instructions
@@ -28,10 +37,15 @@ The platform has been successfully created and pushed to GitHub at `https://gith
 ### Prerequisites
 
 Ensure you have the following installed:
+
 - Node.js 18+
+
 - pnpm 8+
+
 - PostgreSQL 14+ with PostGIS
+
 - Redis 6+
+
 - Flutter SDK 3+ (for mobile apps)
 
 ### Step 1: Clone the Repository
@@ -59,7 +73,7 @@ cd ../..
 
 ### Step 4: Setup Database
 
-#### Option A: Using Docker (Recommended)
+#### Option A: Using Docker (Recommended )
 
 If you have Docker installed:
 
@@ -97,7 +111,7 @@ cp .env.example .env
 
 Edit `.env` and ensure database credentials match:
 
-```env
+```
 DB_HOST=localhost
 DB_PORT=5432
 DB_USER=wasilni
@@ -124,10 +138,15 @@ actorRole?: UserRole;
 ```
 
 Apply this fix to these files:
+
 - `apps/api/src/database/entities/audit-log.entity.ts`
+
 - `apps/api/src/database/entities/ledger-entry.entity.ts`
+
 - `apps/api/src/database/entities/parcel-event.entity.ts`
+
 - `apps/api/src/database/entities/pricing-rule.entity.ts`
+
 - `apps/api/src/database/entities/trip-event.entity.ts`
 
 ### Step 7: Start the Backend API
@@ -159,7 +178,7 @@ curl -X POST http://localhost:3000/api/v1/auth/send-otp \
 
 Expected response: `{"message":"OTP sent successfully to +967771111111"}`
 
-#### Verify OTP (Development Mode)
+#### Verify OTP (Development Mode )
 
 In development mode, check the console logs for the OTP code, then:
 
@@ -207,6 +226,7 @@ flutter run
 **Symptom**: `Cannot find module '@wasilni/shared'`
 
 **Solution**:
+
 ```bash
 cd packages/shared
 pnpm run build
@@ -217,8 +237,11 @@ pnpm run build
 **Symptom**: `Connection refused` or `ECONNREFUSED`
 
 **Solution**:
+
 - Ensure PostgreSQL is running: `sudo service postgresql status`
+
 - Check credentials in `.env` match your database setup
+
 - Verify port 5432 is not blocked by firewall
 
 ### Issue 3: PostGIS Extension Missing
@@ -226,6 +249,7 @@ pnpm run build
 **Symptom**: `ERROR: could not open extension control file`
 
 **Solution**:
+
 ```bash
 # Ubuntu/Debian
 sudo apt-get install postgresql-14-postgis-3
@@ -242,7 +266,9 @@ psql -d wasilni -c "CREATE EXTENSION IF NOT EXISTS postgis;"
 **Symptom**: `Error connecting to Redis`
 
 **Solution**:
+
 - Ensure Redis is running: `sudo service redis-server status`
+
 - Check Redis is listening on port 6379: `redis-cli ping`
 
 ### Issue 5: TypeScript Compilation Errors
@@ -250,16 +276,19 @@ psql -d wasilni -c "CREATE EXTENSION IF NOT EXISTS postgis;"
 **Symptom**: Various TS errors about missing properties
 
 **Solution**:
+
 - Ensure all dependencies are installed: `pnpm install`
+
 - Build shared package: `cd packages/shared && pnpm run build`
+
 - Clear NestJS build cache: `rm -rf apps/api/dist`
 
 ### Issue 6: Migration Errors
 
 **Symptom**: `relation already exists` or migration fails
 
-**Solution**:
-Use the SQL scripts directly instead of MikroORM migrations:
+**Solution**: Use the SQL scripts directly instead of MikroORM migrations:
+
 ```bash
 # Drop and recreate database
 sudo -u postgres psql -c "DROP DATABASE IF EXISTS wasilni;"
@@ -276,6 +305,7 @@ sudo -u postgres psql -d wasilni < infra/seeds/001_initial_data.sql
 **Symptom**: `Package not found` or `pub get` fails
 
 **Solution**:
+
 ```bash
 flutter clean
 flutter pub get
@@ -286,6 +316,7 @@ flutter pub get
 **Symptom**: `EADDRINUSE: address already in use :::3000`
 
 **Solution**:
+
 ```bash
 # Find process using the port
 lsof -i :3000
@@ -302,15 +333,25 @@ PORT=3001
 Use this checklist to verify all components are working:
 
 - [ ] PostgreSQL database is running and accessible
+
 - [ ] Redis is running and accessible
-- [ ] Shared package is built (`packages/shared/dist` exists)
+
+- [ ] Shared package is built (`packages/shared/dist` exists )
+
 - [ ] Backend API starts without errors
+
 - [ ] API health check returns success
+
 - [ ] OTP can be sent to a phone number
+
 - [ ] OTP can be verified (check console for dev OTP)
+
 - [ ] JWT tokens are returned after OTP verification
+
 - [ ] Admin portal starts and displays dashboard
+
 - [ ] Passenger app compiles and runs
+
 - [ ] Driver app compiles and runs
 
 ## Performance Testing
@@ -347,39 +388,60 @@ ORDER BY idx_scan ASC;
 ### API Security Checklist
 
 - [ ] JWT tokens expire after configured time
+
 - [ ] Refresh tokens are properly validated
+
 - [ ] OTP codes expire after configured time
-- [ ] Rate limiting is implemented (TODO)
+
+- [ ] Rate limiting is implemented (TODO )
+
 - [ ] CORS is properly configured
+
 - [ ] SQL injection is prevented (parameterized queries)
+
 - [ ] XSS is prevented (input validation)
 
 ### Database Security Checklist
 
 - [ ] RLS policies are active
+
 - [ ] Tenant isolation is enforced
+
 - [ ] Super admin can bypass RLS
+
 - [ ] Regular users cannot access other tenants' data
 
 ## Next Steps
 
 1. **Implement Remaining Modules**: Complete the placeholder modules (Drivers, Trips, Parcels, etc.)
-2. **Add Unit Tests**: Write tests for services and controllers
-3. **Add Integration Tests**: Test API endpoints end-to-end
-4. **Implement WebSocket**: Add real-time features for driver tracking
-5. **Complete Mobile Apps**: Add booking screens, maps integration, and real-time updates
-6. **Deploy to Staging**: Set up CI/CD pipeline and deploy to staging environment
-7. **Performance Optimization**: Add caching, optimize queries, and implement rate limiting
-8. **Security Hardening**: Add rate limiting, implement HTTPS, and conduct security audit
+
+1. **Add Unit Tests**: Write tests for services and controllers
+
+1. **Add Integration Tests**: Test API endpoints end-to-end
+
+1. **Implement WebSocket**: Add real-time features for driver tracking
+
+1. **Complete Mobile Apps**: Add booking screens, maps integration, and real-time updates
+
+1. **Deploy to Staging**: Set up CI/CD pipeline and deploy to staging environment
+
+1. **Performance Optimization**: Add caching, optimize queries, and implement rate limiting
+
+1. **Security Hardening**: Add rate limiting, implement HTTPS, and conduct security audit
 
 ## Support
 
 For issues or questions:
+
 - Check the main README.md for project overview
+
 - Review RUNBOOK.md for setup instructions
+
 - Review PROJECT_OVERVIEW.md for architecture details
-- Open an issue on GitHub: https://github.com/r-ismail/wasilni-platform/issues
+
+- Open an issue on GitHub: [https://github.com/r-ismail/wasilni-platform/issues](https://github.com/r-ismail/wasilni-platform/issues)
 
 ## Conclusion
 
 The Wasilni platform foundation is complete and ready for development. The core architecture is in place with multi-tenancy, authentication, database schema, and mobile app scaffolding. Follow this testing guide to verify everything works on your local machine, then proceed with implementing the remaining business logic and features.
+
