@@ -1,10 +1,15 @@
 'use client';
 
 import AdminLayout from '../components/AdminLayout';
+import Modal from '../components/Modal';
 import { useState } from 'react';
+import { api } from '../lib/api';
 
 export default function TripsPage() {
   const [filter, setFilter] = useState('all');
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showViewModal, setShowViewModal] = useState(false);
+  const [selectedTrip, setSelectedTrip] = useState<any>(null);
 
   const trips = [
     { id: 'T-1001', customer: 'Ahmed Ali', driver: 'Mohammed Hassan', from: 'Sana\'a Downtown', to: 'Airport', type: 'In-Town Taxi', status: 'Completed', amount: '2,500 YER', date: '2025-12-15 10:30' },
@@ -14,6 +19,30 @@ export default function TripsPage() {
   ];
 
   const filteredTrips = filter === 'all' ? trips : trips.filter(t => t.status.toLowerCase().replace(' ', '-') === filter);
+
+  const handleCreateTrip = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const tripData = Object.fromEntries(formData);
+    
+    try {
+      await api.createTrip(tripData);
+      alert('Trip created successfully!');
+      setShowCreateModal(false);
+      // Reload trips data here
+    } catch (error) {
+      alert('Failed to create trip');
+    }
+  };
+
+  const handleViewTrip = (trip: any) => {
+    setSelectedTrip(trip);
+    setShowViewModal(true);
+  };
+
+  const handleEditTrip = (trip: any) => {
+    alert(`Edit functionality for trip ${trip.id} will be implemented`);
+  };
 
   return (
     <AdminLayout title="Trips Management" subtitle="Monitor and manage all trips across the platform">
@@ -59,7 +88,10 @@ export default function TripsPage() {
               </button>
             ))}
           </div>
-          <button className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 font-medium">
+          <button 
+            onClick={() => setShowCreateModal(true)}
+            className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 font-medium"
+          >
             + Create Trip
           </button>
         </div>
@@ -104,8 +136,18 @@ export default function TripsPage() {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{trip.amount}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm space-x-2">
-                    <button className="text-indigo-600 hover:text-indigo-900 font-medium">View</button>
-                    <button className="text-gray-600 hover:text-gray-900 font-medium">Edit</button>
+                    <button 
+                      onClick={() => handleViewTrip(trip)}
+                      className="text-indigo-600 hover:text-indigo-900 font-medium"
+                    >
+                      View
+                    </button>
+                    <button 
+                      onClick={() => handleEditTrip(trip)}
+                      className="text-gray-600 hover:text-gray-900 font-medium"
+                    >
+                      Edit
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -113,6 +155,87 @@ export default function TripsPage() {
           </table>
         </div>
       </div>
+
+      {/* Create Trip Modal */}
+      <Modal isOpen={showCreateModal} onClose={() => setShowCreateModal(false)} title="Create New Trip">
+        <form onSubmit={handleCreateTrip} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Customer Phone</label>
+            <input name="customerPhone" type="tel" required className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500" placeholder="+967 777 123 456" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Pickup Location</label>
+            <input name="from" type="text" required className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Dropoff Location</label>
+            <input name="to" type="text" required className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Trip Type</label>
+            <select name="type" required className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
+              <option value="In-Town Taxi">In-Town Taxi</option>
+              <option value="Out-Town VIP">Out-Town VIP</option>
+              <option value="Out-Town Shared">Out-Town Shared</option>
+            </select>
+          </div>
+          <div className="flex justify-end space-x-3 mt-6">
+            <button type="button" onClick={() => setShowCreateModal(false)} className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+              Cancel
+            </button>
+            <button type="submit" className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">
+              Create Trip
+            </button>
+          </div>
+        </form>
+      </Modal>
+
+      {/* View Trip Modal */}
+      <Modal isOpen={showViewModal} onClose={() => setShowViewModal(false)} title="Trip Details">
+        {selectedTrip && (
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <p className="text-sm text-gray-500">Trip ID</p>
+                <p className="font-medium">{selectedTrip.id}</p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-500">Status</p>
+                <p className="font-medium">{selectedTrip.status}</p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-500">Customer</p>
+                <p className="font-medium">{selectedTrip.customer}</p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-500">Driver</p>
+                <p className="font-medium">{selectedTrip.driver}</p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-500">From</p>
+                <p className="font-medium">{selectedTrip.from}</p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-500">To</p>
+                <p className="font-medium">{selectedTrip.to}</p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-500">Type</p>
+                <p className="font-medium">{selectedTrip.type}</p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-500">Amount</p>
+                <p className="font-medium">{selectedTrip.amount}</p>
+              </div>
+            </div>
+            <div className="flex justify-end mt-6">
+              <button onClick={() => setShowViewModal(false)} className="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300">
+                Close
+              </button>
+            </div>
+          </div>
+        )}
+      </Modal>
     </AdminLayout>
   );
 }
