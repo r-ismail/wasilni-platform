@@ -18,10 +18,10 @@ export class PricingRule extends BaseEntity {
   description?: string;
 
   // Applicable to
-  @Enum(() => TripType, { nullable: true })
+  @Enum(() => TripType)
   tripType?: TripType;
 
-  @Enum(() => ParcelSize, { nullable: true })
+  @Enum(() => ParcelSize)
   parcelSize?: ParcelSize;
 
   @Property({ nullable: true })

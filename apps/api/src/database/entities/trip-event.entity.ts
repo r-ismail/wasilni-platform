@@ -23,7 +23,7 @@ export class TripEvent extends BaseEntity {
   @Property({ nullable: true })
   actorId?: string;
 
-  @Enum(() => UserRole, { nullable: true })
+  @Enum(() => UserRole)
   actorRole?: UserRole;
 
   @Property({ type: 'json', nullable: true })

@@ -22,7 +22,7 @@ export class AuditLog extends BaseEntity {
   @Property({ nullable: true })
   actorId?: string;
 
-  @Enum(() => UserRole, { nullable: true })
+  @Enum(() => UserRole)
   actorRole?: UserRole;
 
   @Property({ nullable: true })

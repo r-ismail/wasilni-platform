@@ -32,7 +32,7 @@ export class LedgerEntry extends BaseEntity {
   @Property({ type: 'decimal', precision: 10, scale: 2, nullable: true })
   reportingAmount?: number;
 
-  @Enum(() => Currency, { nullable: true })
+  @Enum(() => Currency)
   reportingCurrency?: Currency;
 
   // Double-entry accounting
