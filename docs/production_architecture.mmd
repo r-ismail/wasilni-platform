@@ -1,0 +1,34 @@
+graph TD
+    subgraph "Users"
+        PassengerApp["Passenger App"] --> CDN
+        DriverApp["Driver App"] --> CDN
+        AdminUser["Agency/Admin"] --> CDN
+    end
+
+    subgraph "Cloud Infrastructure (PaaS - Render/Vercel)"
+        CDN(Cloudflare CDN/WAF) --> Vercel
+        CDN --> RenderAPI
+
+        subgraph "Vercel"
+            Vercel["Next.js Admin Portal"] --> RenderAPI
+        end
+
+        subgraph "Render"
+            RenderAPI("NestJS API Service") -- "Port 5432" --> DB[("PostgreSQL + PostGIS")]
+            RenderAPI -- "Port 6379" --> Cache[("Redis Cache/Queue")]
+        end
+
+        RenderAPI -- "API Calls" --> SMSGateway["SMS Gateway"]
+        RenderAPI -- "Signed URLs" --> ObjectStorage["S3-Compatible Object Storage"]
+    end
+
+    style PassengerApp fill:#9f7aea,stroke:#333,stroke-width:2px
+    style DriverApp fill:#9f7aea,stroke:#333,stroke-width:2px
+    style AdminUser fill:#4299e1,stroke:#333,stroke-width:2px
+    style CDN fill:#f6ad55,stroke:#333,stroke-width:2px
+    style Vercel fill:#e2e8f0,stroke:#333,stroke-width:2px
+    style RenderAPI fill:#e2e8f0,stroke:#333,stroke-width:2px
+    style DB fill:#c3dafe,stroke:#333,stroke-width:2px
+    style Cache fill:#fbd38d,stroke:#333,stroke-width:2px
+    style SMSGateway fill:#68d391,stroke:#333,stroke-width:2px
+    style ObjectStorage fill:#68d391,stroke:#333,stroke-width:2px
