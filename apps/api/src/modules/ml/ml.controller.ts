@@ -1,6 +1,7 @@
-import { Controller, Post, Get, Body, UseGuards } from '@nestjs/common';
+import { Controller, Post, Get, Body, Param, UseGuards } from '@nestjs/common';
 import { PredictiveETAService } from './services/predictive-eta.service';
 import { RouteOptimizationService } from './services/route-optimization.service';
+import { EarningsOptimizationService } from './services/earnings-optimization.service';
 import { PredictETADto } from './dto/ml.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
@@ -14,6 +15,7 @@ export class MLController {
   constructor(
     private readonly predictiveETAService: PredictiveETAService,
     private readonly routeOptimizationService: RouteOptimizationService,
+    private readonly earningsOptimizationService: EarningsOptimizationService,
   ) {}
 
   @Post('predict-eta')
@@ -66,6 +68,20 @@ export class MLController {
       body.currentLng,
       body.destinationLat,
       body.destinationLng,
+    );
+  }
+
+  @Get('earnings-insights/:driverId')
+  async getEarningsInsights(@Param('driverId') driverId: string) {
+    return this.earningsOptimizationService.getEarningsInsights(driverId);
+  }
+
+  @Post('real-time-suggestions')
+  async getRealTimeSuggestions(@Body() body: any) {
+    return this.earningsOptimizationService.getRealTimeSuggestions(
+      body.driverId,
+      body.currentLat,
+      body.currentLng,
     );
   }
 }

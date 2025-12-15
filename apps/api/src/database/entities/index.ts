@@ -12,3 +12,5 @@ export { AuditLog } from './audit-log.entity';
 export { Rating } from './rating.entity';
 export { VehicleMaintenance } from './vehicle-maintenance.entity';
 export { FraudAlert } from './fraud-alert.entity';
+export { Wallet } from './wallet.entity';
+export { WalletTransaction } from './wallet-transaction.entity';

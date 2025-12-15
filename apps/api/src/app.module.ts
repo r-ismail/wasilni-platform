@@ -24,6 +24,8 @@ import { SafetyModule } from './modules/safety/safety.module';
 import { VoiceModule } from './modules/voice/voice.module';
 import { FraudDetectionModule } from './modules/fraud-detection/fraud-detection.module';
 import { MLModule } from './modules/ml/ml.module';
+import { WalletModule } from './modules/wallet/wallet.module';
+import { AnalyticsModule } from './modules/analytics/analytics.module';
 
 @Module({
   imports: [
@@ -60,6 +62,8 @@ import { MLModule } from './modules/ml/ml.module';
     VoiceModule,
     FraudDetectionModule,
     MLModule,
+    WalletModule,
+    AnalyticsModule,
     ParcelsModule,
     PricingModule,
     LedgerModule,
