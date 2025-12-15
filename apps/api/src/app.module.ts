@@ -28,6 +28,7 @@ import { WalletModule } from './modules/wallet/wallet.module';
 import { AnalyticsModule } from './modules/analytics/analytics.module';
 import { ComputerVisionModule } from './modules/computer-vision/computer-vision.module';
 import { SubscriptionsModule } from './modules/subscriptions/subscriptions.module';
+import { DriverToolsModule } from './modules/driver-tools/driver-tools.module';
 
 @Module({
   imports: [
@@ -68,6 +69,7 @@ import { SubscriptionsModule } from './modules/subscriptions/subscriptions.modul
     AnalyticsModule,
     ComputerVisionModule,
     SubscriptionsModule,
+    DriverToolsModule,
     ParcelsModule,
     PricingModule,
     LedgerModule,
