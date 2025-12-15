@@ -7,28 +7,19 @@ import { ParcelStatus, ParcelSize, Currency } from '@wasilni/shared';
 import { ParcelEvent } from './parcel-event.entity';
 
 @Entity({ tableName: 'parcels' })
-@Index({ properties: ['tenantId', 'status'] })
-@Index({ properties: ['senderId'] })
-@Index({ properties: ['receiverId'] })
-@Index({ properties: ['driverId'] })
+@Index({ properties: ['tenant', 'status'] })
+@Index({ properties: ['sender'] })
+@Index({ properties: ['receiver'] })
+@Index({ properties: ['driver'] })
 export class Parcel extends BaseEntity {
-  @ManyToOne(() => Tenant)
+  @ManyToOne(() => Tenant, { fieldName: 'tenant_id' })
   tenant: Tenant;
 
-  @Property()
-  tenantId: string;
-
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, { fieldName: 'sender_id' })
   sender: User;
 
-  @Property()
-  senderId: string;
-
-  @ManyToOne(() => User, { nullable: true })
+  @ManyToOne(() => User, { nullable: true, fieldName: 'receiver_id' })
   receiver?: User;
-
-  @Property({ nullable: true })
-  receiverId?: string;
 
   @Property()
   receiverName: string;
@@ -36,11 +27,8 @@ export class Parcel extends BaseEntity {
   @Property()
   receiverPhone: string;
 
-  @ManyToOne(() => Driver, { nullable: true })
+  @ManyToOne(() => Driver, { nullable: true, fieldName: 'driver_id' })
   driver?: Driver;
-
-  @Property({ nullable: true })
-  driverId?: string;
 
   @Enum(() => ParcelStatus)
   @Index()

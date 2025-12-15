@@ -5,11 +5,8 @@ import { ParcelStatus, UserRole } from '@wasilni/shared';
 
 @Entity({ tableName: 'parcel_events' })
 export class ParcelEvent extends BaseEntity {
-  @ManyToOne(() => Parcel)
+  @ManyToOne(() => Parcel, { fieldName: 'parcel_id' })
   parcel: Parcel;
-
-  @Property()
-  parcelId: string;
 
   @Enum(() => ParcelStatus)
   status: ParcelStatus;

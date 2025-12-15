@@ -7,27 +7,18 @@ import { TripStatus, TripType, Currency } from '@wasilni/shared';
 import { TripEvent } from './trip-event.entity';
 
 @Entity({ tableName: 'trips' })
-@Index({ properties: ['tenantId', 'status'] })
-@Index({ properties: ['customerId'] })
-@Index({ properties: ['driverId'] })
+@Index({ properties: ['tenant', 'status'] })
+@Index({ properties: ['customer'] })
+@Index({ properties: ['driver'] })
 export class Trip extends BaseEntity {
-  @ManyToOne(() => Tenant)
+  @ManyToOne(() => Tenant, { fieldName: 'tenant_id' })
   tenant: Tenant;
 
-  @Property()
-  tenantId: string;
-
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, { fieldName: 'customer_id' })
   customer: User;
 
-  @Property()
-  customerId: string;
-
-  @ManyToOne(() => Driver, { nullable: true })
+  @ManyToOne(() => Driver, { nullable: true, fieldName: 'driver_id' })
   driver?: Driver;
-
-  @Property({ nullable: true })
-  driverId?: string;
 
   @Enum(() => TripType)
   @Index()

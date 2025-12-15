@@ -6,14 +6,11 @@ import { Trip } from './trip.entity';
 import { Parcel } from './parcel.entity';
 
 @Entity({ tableName: 'drivers' })
-@Index({ properties: ['tenantId', 'phone'] })
+@Index({ properties: ['tenant', 'phone'] })
 @Index({ properties: ['status'] })
 export class Driver extends BaseEntity {
-  @ManyToOne(() => Tenant)
+  @ManyToOne(() => Tenant, { fieldName: 'tenant_id' })
   tenant: Tenant;
-
-  @Property()
-  tenantId: string;
 
   @Property()
   phone: string;

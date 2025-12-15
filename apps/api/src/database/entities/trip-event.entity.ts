@@ -5,11 +5,8 @@ import { TripStatus, UserRole } from '@wasilni/shared';
 
 @Entity({ tableName: 'trip_events' })
 export class TripEvent extends BaseEntity {
-  @ManyToOne(() => Trip)
+  @ManyToOne(() => Trip, { fieldName: 'trip_id' })
   trip: Trip;
-
-  @Property()
-  tripId: string;
 
   @Enum(() => TripStatus)
   status: TripStatus;

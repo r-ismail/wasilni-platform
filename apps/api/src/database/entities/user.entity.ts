@@ -6,13 +6,10 @@ import { Trip } from './trip.entity';
 import { Parcel } from './parcel.entity';
 
 @Entity({ tableName: 'users' })
-@Index({ properties: ['tenantId', 'phone'] })
+@Index({ properties: ['tenant', 'phone'] })
 export class User extends BaseEntity {
-  @ManyToOne(() => Tenant, { nullable: true })
+  @ManyToOne(() => Tenant, { nullable: true, fieldName: 'tenant_id' })
   tenant?: Tenant;
-
-  @Property({ nullable: true })
-  tenantId?: string;
 
   @Property()
   @Unique()
