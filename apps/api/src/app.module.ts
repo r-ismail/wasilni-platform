@@ -19,6 +19,8 @@ import { WebsocketModule } from './modules/websocket/websocket.module';
 import { AdminModule } from './modules/admin/admin.module';
 import { AgenciesModule } from './modules/agencies/agencies.module';
 import { MatchingModule } from './modules/matching/matching.module';
+import { RatingsModule } from './modules/ratings/ratings.module';
+import { SafetyModule } from './modules/safety/safety.module';
 
 @Module({
   imports: [
@@ -48,9 +50,10 @@ import { MatchingModule } from './modules/matching/matching.module';
     AuthModule,
     UsersModule,
     DriversModule,
-    AgenciesModule,
-    TripsModule,
+    AgenciesModul    AgenciesModule,
     MatchingModule,
+    RatingsModule,
+    SafetyModule,
     ParcelsModule,
     PricingModule,
     LedgerModule,

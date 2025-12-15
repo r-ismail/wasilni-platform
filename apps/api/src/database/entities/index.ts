@@ -9,3 +9,4 @@ export { ParcelEvent } from './parcel-event.entity';
 export { LedgerEntry } from './ledger-entry.entity';
 export { PricingRule } from './pricing-rule.entity';
 export { AuditLog } from './audit-log.entity';
+export { Rating } from './rating.entity';

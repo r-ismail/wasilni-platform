@@ -13,6 +13,8 @@ interface MatchingCriteria {
   maxDistance?: number; // in kilometers
   tripType?: TripType;
   requiredCapacity?: number;
+  womenOnlyRide?: boolean;
+  customerGender?: 'male' | 'female' | 'other';
 }
 
 @Injectable()
@@ -46,6 +48,11 @@ export class MatchingService {
 
     if (vehicleType) {
       qb.andWhere({ vehicleType });
+    }
+
+    // Women-only ride filter
+    if (criteria.womenOnlyRide && criteria.customerGender === 'female') {
+      qb.andWhere({ gender: 'female' });
     }
 
     // PostGIS distance query (ST_DWithin uses meters)

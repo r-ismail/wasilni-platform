@@ -45,6 +45,15 @@ export class Driver extends BaseEntity {
   @Property({ nullable: true })
   preferredLanguage?: string = 'ar';
 
+  @Property({ nullable: true })
+  gender?: 'male' | 'female' | 'other';
+
+  @Property({ default: 0 })
+  rating: number = 0;
+
+  @Property({ default: 0 })
+  totalRatings: number = 0;
+
   // KYC Information
   @Enum(() => KYCStatus)
   @Index()

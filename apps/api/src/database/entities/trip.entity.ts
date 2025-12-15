@@ -58,6 +58,27 @@ export class Trip extends BaseEntity {
   @Property({ default: false })
   isScheduled: boolean = false;
 
+  // Women-Only Rides
+  @Property({ default: false })
+  womenOnlyRide: boolean = false;
+
+  // Safety Features
+  @Property({ default: false })
+  sosActivated: boolean = false;
+
+  @Property({ nullable: true })
+  sosActivatedAt?: Date;
+
+  @Property({ type: 'json', nullable: true })
+  emergencyContacts?: Array<{
+    name: string;
+    phone: string;
+    notified: boolean;
+  }>;
+
+  @Property({ nullable: true })
+  shareTrackingUrl?: string;
+
   // Pricing
   @Property({ type: 'decimal', precision: 10, scale: 2 })
   estimatedFare: number;
