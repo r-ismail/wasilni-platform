@@ -4,13 +4,24 @@ import { MLController } from './ml.controller';
 import { PredictiveETAService } from './services/predictive-eta.service';
 import { RouteOptimizationService } from './services/route-optimization.service';
 import { EarningsOptimizationService } from './services/earnings-optimization.service';
+import { DemandForecastingService } from './services/demand-forecasting.service';
 import { Trip } from '../../database/entities/trip.entity';
 import { Driver } from '../../database/entities/driver.entity';
 
 @Module({
   imports: [MikroOrmModule.forFeature([Trip, Driver])],
   controllers: [MLController],
-  providers: [PredictiveETAService, RouteOptimizationService, EarningsOptimizationService],
-  exports: [PredictiveETAService, RouteOptimizationService, EarningsOptimizationService],
+  providers: [
+    PredictiveETAService,
+    RouteOptimizationService,
+    EarningsOptimizationService,
+    DemandForecastingService,
+  ],
+  exports: [
+    PredictiveETAService,
+    RouteOptimizationService,
+    EarningsOptimizationService,
+    DemandForecastingService,
+  ],
 })
 export class MLModule {}

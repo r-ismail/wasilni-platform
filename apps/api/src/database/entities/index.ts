@@ -13,4 +13,5 @@ export { Rating } from './rating.entity';
 export { VehicleMaintenance } from './vehicle-maintenance.entity';
 export { FraudAlert } from './fraud-alert.entity';
 export { Wallet } from './wallet.entity';
-export { WalletTransaction } from './wallet-transaction.entity';
+export { WalletTransactiexport * from './wallet-transaction.entity';
+export * from './subscription.entity';

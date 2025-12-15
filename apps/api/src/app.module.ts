@@ -26,6 +26,8 @@ import { FraudDetectionModule } from './modules/fraud-detection/fraud-detection.
 import { MLModule } from './modules/ml/ml.module';
 import { WalletModule } from './modules/wallet/wallet.module';
 import { AnalyticsModule } from './modules/analytics/analytics.module';
+import { ComputerVisionModule } from './modules/computer-vision/computer-vision.module';
+import { SubscriptionsModule } from './modules/subscriptions/subscriptions.module';
 
 @Module({
   imports: [
@@ -64,6 +66,8 @@ import { AnalyticsModule } from './modules/analytics/analytics.module';
     MLModule,
     WalletModule,
     AnalyticsModule,
+    ComputerVisionModule,
+    SubscriptionsModule,
     ParcelsModule,
     PricingModule,
     LedgerModule,
